@@ -1,0 +1,57 @@
+#include <iostream>
+#include <limits.h>
+using namespace std;
+
+int findMinVertex(int* distance, bool* visited, int n) {
+    int minVertex = -1;
+    for (int i = 0; i < n; i++) {
+        if (!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
+            minVertex = i;
+    }
+    return minVertex;
+}
+
+int main() {
+    int n;
+    cout << "Enter number of vertices: ";
+    cin >> n;
+
+    int graph[100][100];
+    cout << "Enter adjacency matrix (" << n << "x" << n << "):\n";
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> graph[i][j];
+
+    int source;
+    cout << "Enter source vertex (0 to " << n - 1 << "): ";
+    cin >> source;
+
+    int distance[100];
+    bool visited[100];
+
+    for (int i = 0; i < n; i++) {
+        distance[i] = INT_MAX;
+        visited[i] = false;
+    }
+
+    distance[source] = 0;
+
+    for (int i = 0; i < n - 1; i++) {
+        int u = findMinVertex(distance, visited, n);
+        visited[u] = true;
+
+        for (int v = 0; v < n; v++) {
+            if (graph[u][v] != 0 && !visited[v]) {
+                int newDist = distance[u] + graph[u][v];
+                if (newDist < distance[v])
+                    distance[v] = newDist;
+            }
+        }
+    }
+
+    cout << "Shortest distances from source " << source << ":\n";
+    for (int i = 0; i < n; i++)
+        cout << "To vertex " << i << ": " << distance[i] << endl;
+
+    return 0;
+}
