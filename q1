@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+    int n;
+    cout << "Enter number of elements in the set: ";
+    cin >> n;
+
+    int relation[100][100];
+    cout << "Enter relation matrix (" << n << "x" << n << "):\n";
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            cin >> relation[i][j];
+
+    bool reflexive = true, symmetric = true, transitive = true;
+
+    for (int i = 0; i < n; i++)
+        if (relation[i][i] != 1)
+            reflexive = false;
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            if (relation[i][j] != relation[j][i])
+                symmetric = false;
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            for (int k = 0; k < n; k++)
+                if (relation[i][j] && relation[j][k] && !relation[i][k])
+                    transitive = false;
+
+    cout << "Reflexive: " << (reflexive ? "Yes" : "No") << endl;
+    cout << "Symmetric: " << (symmetric ? "Yes" : "No") << endl;
+    cout << "Transitive: " << (transitive ? "Yes" : "No") << endl;
+
+    return 0;
+}
